@@ -28,7 +28,7 @@ const CreateCustomer = () => {
       const res = await fetch("http://localhost:4040/addCustomer", settings);
       const data = await res.json();
       if (data) {
-        console.log("added");
+        alert("Customer Added Succesfully");
       }
     } catch (error) {
       console.log(error);
@@ -86,11 +86,13 @@ const CreateCustomer = () => {
           />
         </div>
 
-        <input
+        <button
           type="submit"
           value="Create Customer"
           className=" font-bold p-4 shadow-lg rounded bg-slate-600 text-white hover:bg-green-600 hover:text-white cursor-pointer sm:col-span-2 md:col-span-3"
-        />
+        >
+          Create Customer
+        </button>
       </form>
     </div>
   );
