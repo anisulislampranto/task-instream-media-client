@@ -20,8 +20,8 @@ const CreateCustomer = () => {
           placeholder="Country"
           className=" p-3 shadow rounded"
         />
-        <select class="form-select appearance-none p-3 shadow">
-          <option selected>Select Gender</option>
+        <select className="form-select appearance-none p-3 shadow">
+          <option defaultValue="Select Gender">Select Gender</option>
           <option value="Male">Male</option>
           <option value="Female">Female</option>
           <option value="Others">Others</option>
