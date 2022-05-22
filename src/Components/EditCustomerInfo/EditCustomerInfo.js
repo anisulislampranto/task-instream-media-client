@@ -9,9 +9,11 @@ const EditCustomerInfo = (props) => {
   const [updatedCountry, setUpdatedCountry] = useState("");
   const [updatedGender, setUpdatedGender] = useState("");
   const [updatedProfilePic, setUpdatedProfilePic] = useState(null);
+  const [disabled, setDisabled] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setDisabled(true);
 
     if (
       updatedName &&
@@ -38,8 +40,7 @@ const EditCustomerInfo = (props) => {
         const res = await fetch(url, settings);
         const data = await res.json();
         if (data) {
-          alert("updated customer info");
-          console.log(data);
+          setDisabled(false);
         }
       } catch (error) {
         console.log(error);
@@ -111,10 +112,12 @@ const EditCustomerInfo = (props) => {
         </div>
         <button
           type="submit"
-          className=" bg-green-700 p-3 rounded font-bold text-white hover:bg-green-600"
+          className=" bg-green-700 p-3 rounded font-bold text-white hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          disabled={disabled}
         >
-          Submit
+          {disabled ? "Submitted" : "Submit"}
         </button>
+        {disabled && <p className=" text-green-600">Submitted Succcessfully</p>}
       </form>
     </div>
   );
