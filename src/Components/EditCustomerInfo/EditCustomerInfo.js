@@ -1,123 +1,140 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const EditCustomerInfo = (props) => {
   const { name, gender, email, country, age, _id } = props;
-
-  const [updatedName, setUpdatedName] = useState("");
-  const [updatedEmail, setUpdatedEmail] = useState("");
-  const [updatedAge, setUpdatedAge] = useState("");
-  const [updatedCountry, setUpdatedCountry] = useState("");
-  const [updatedGender, setUpdatedGender] = useState("");
-  const [updatedProfilePic, setUpdatedProfilePic] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [disabled, setDisabled] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setDisabled(true);
+    const {
+      updatedName,
+      updatedEmail,
+      updatedAge,
+      updatedCountry,
+      updatedGender,
+      updatedProfilePic,
+    } = data;
 
-    if (
-      updatedName &&
-      updatedEmail &&
-      updatedAge &&
-      updatedCountry &&
-      updatedGender
-    ) {
-      const formData = new FormData();
-      formData.append("name", updatedName);
-      formData.append("email", updatedEmail);
-      formData.append("age", updatedAge);
-      formData.append("country", updatedCountry);
-      formData.append("gender", updatedGender);
-      formData.append("profilePic", updatedProfilePic);
+    const formData = new FormData();
+    formData.append("name", updatedName);
+    formData.append("email", updatedEmail);
+    formData.append("age", updatedAge);
+    formData.append("country", updatedCountry);
+    formData.append("gender", updatedGender);
+    formData.append("profilePic", updatedProfilePic[0]);
 
-      const settings = {
-        method: "PUT",
-        body: formData,
-      };
+    const settings = {
+      method: "PUT",
+      body: formData,
+    };
 
-      try {
-        const url = `http://localhost:4040/customers/update/${_id}`;
-        const res = await fetch(url, settings);
-        const data = await res.json();
-        if (data) {
-          setDisabled(false);
-        }
-      } catch (error) {
-        console.log(error);
+    try {
+      const url = `http://localhost:4040/customers/update/${_id}`;
+      const res = await fetch(url, settings);
+      const data = await res.json();
+      if (data) {
+        setDisabled(false);
+        alert("edited");
       }
-    } else {
-      return alert("Please enter all input Value");
+    } catch (error) {
+      console.log(error);
     }
   };
 
   return (
     <div>
-      <form onSubmit={handleSubmit} className=" flex flex-col gap-3">
+      {/* "handleSubmit" will validate your inputs before invoking "onSubmit"  */}
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
         <input
-          type="text"
           placeholder="Name"
-          className="rounded p-2"
-          required
-          onChange={(e) => setUpdatedName(e.target.value)}
+          className=" p-3 shadow rounded"
           defaultValue={name}
+          {...register("updatedName", { required: true })}
         />
-        <input
-          type="text"
-          placeholder="Email"
-          className="rounded p-2"
-          required
-          onChange={(e) => setUpdatedEmail(e.target.value)}
-          defaultValue={email}
-        />
-        <select
-          className="form-select appearance-none p-3 shadow"
-          required
-          onChange={(e) => setUpdatedGender(e.target.value)}
-          defaultValue={gender}
-        >
-          <option defaultValue="Select Gender" disabled>
-            Select Gender
-          </option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Others">Others</option>
-        </select>
+        {errors.updatedName && (
+          <span className=" text-red-700">This field is required</span>
+        )}
 
         <input
-          type="number"
-          placeholder="age"
-          className="rounded p-2"
-          required
-          onChange={(e) => setUpdatedAge(e.target.value)}
-          defaultValue={age}
+          placeholder="Email"
+          className=" p-3 shadow rounded"
+          defaultValue={email}
+          {...register("updatedEmail", {
+            required: true,
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "invalid email address",
+            },
+          })}
         />
+        {errors.updatedEmail && (
+          <span className=" text-red-700">{errors.updatedEmail.message}</span>
+        )}
+
         <input
-          type="text"
-          placeholder="country"
-          className="rounded p-2"
-          required
-          onChange={(e) => setUpdatedCountry(e.target.value)}
-          defaultValue={country}
+          type={"number"}
+          placeholder="Age"
+          className=" p-3 shadow rounded appearance-none"
+          defaultValue={age}
+          {...register("updatedAge", {
+            required: true,
+            pattern: {
+              value: /^[1-9]$|^[1-9][0-9]$|^(100)$/,
+              message: "age cannot be more then 100",
+            },
+          })}
         />
-        <div>
-          <label htmlFor="profilePic">Add Profile Picture:</label>
-          <input
-            type="file"
-            name="profilePic"
-            accept="image/png, image/jpeg"
-            className="w-60"
-            required
-            onChange={(e) => setUpdatedProfilePic(e.target.files[0])}
-          />
-        </div>
+        {errors.updatedAge && (
+          <span className=" text-red-700">{errors.updatedAge.message}</span>
+        )}
+
+        <input
+          placeholder="Country"
+          className=" p-3 shadow rounded"
+          defaultValue={country}
+          {...register("updatedCountry", { required: true })}
+        />
+        {errors.updatedCountry && (
+          <span className=" text-red-700">This field is required</span>
+        )}
+
+        <select
+          className="form-select appearance-none p-3 shadow rounded"
+          defaultValue={gender}
+          {...register("updatedGender", { required: true })}
+        >
+          <option value="Select Gender" disabled>
+            Select Gender
+          </option>
+          <option value="male">male</option>
+          <option value="female">female</option>
+          <option value="other">other</option>
+        </select>
+        {errors.updatedGender && (
+          <span className=" text-red-700">This field is required</span>
+        )}
+
+        <input
+          type={"file"}
+          {...register("updatedProfilePic", { required: true })}
+        />
+        {errors.updatedProfilePic && (
+          <span className=" text-red-700">This field is required</span>
+        )}
+
         <button
           type="submit"
-          className=" bg-green-700 p-3 rounded font-bold text-white hover:bg-green-600 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className=" font-bold p-4 shadow-lg rounded bg-slate-600 text-white hover:bg-green-600 hover:text-white cursor-pointer sm:col-span-2 md:col-span-3 disabled:bg-slate-400 disabled:cursor-wait"
           disabled={disabled}
         >
           {disabled ? "Submitted" : "Submit"}
         </button>
-        {disabled && <p className=" text-green-600">Submitted Succcessfully</p>}
       </form>
     </div>
   );

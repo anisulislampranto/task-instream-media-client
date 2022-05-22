@@ -8,8 +8,6 @@ const Customers = () => {
   const [showModal, setShowModal] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({});
 
-  console.log(customerInfo.name);
-
   useEffect(() => {
     const fetchData = async () => {
       const res = await fetch("http://localhost:4040/customers");
@@ -38,6 +36,7 @@ const Customers = () => {
               customer={customer}
               setShowModal={setShowModal}
               setCustomerInfo={setCustomerInfo}
+              key={customer._id}
             />
           ))
         ) : (

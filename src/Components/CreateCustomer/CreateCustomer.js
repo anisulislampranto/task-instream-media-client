@@ -1,17 +1,17 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const CreateCustomer = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [age, setAge] = useState("");
-  const [country, setCountry] = useState("");
-  const [gender, setGender] = useState("");
-  const [profilePic, setProfilePic] = useState(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const [disabled, setDisabled] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const onSubmit = async (data) => {
     setDisabled(true);
+    const { name, email, age, country, gender, profilePic } = data;
 
     const formData = new FormData();
     formData.append("name", name);
@@ -19,13 +19,11 @@ const CreateCustomer = () => {
     formData.append("age", age);
     formData.append("country", country);
     formData.append("gender", gender);
-    formData.append("profilePic", profilePic);
-
+    formData.append("profilePic", profilePic[0]);
     const settings = {
       method: "POST",
       body: formData,
     };
-
     try {
       const res = await fetch("http://localhost:4040/addCustomer", settings);
       const data = await res.json();
@@ -41,62 +39,76 @@ const CreateCustomer = () => {
 
   return (
     <div className=" mt-9 mx-2">
-      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
         <input
-          type="text"
           placeholder="Name"
           className=" p-3 shadow rounded"
-          onChange={(e) => setName(e.target.value)}
-          required
+          {...register("name", { required: true })}
         />
+        {errors.name && (
+          <span className=" text-red-500">This field is required</span>
+        )}
+
         <input
-          type="text"
           placeholder="Email"
           className=" p-3 shadow rounded"
-          onChange={(e) => setEmail(e.target.value)}
-          required
+          {...register("email", {
+            required: true,
+            pattern: {
+              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+              message: "invalid email address",
+            },
+          })}
         />
+        {errors.email && (
+          <span className=" text-red-500">{errors.email.message}</span>
+        )}
+
         <input
-          type="number"
+          type={"number"}
           placeholder="Age"
           className=" p-3 shadow rounded appearance-none"
-          onChange={(e) => setAge(e.target.value)}
-          required
+          {...register("age", {
+            required: true,
+            pattern: {
+              value: /^[1-9]$|^[1-9][0-9]$|^(100)$/,
+              message: "age cannot be more then 100",
+            },
+          })}
         />
+        {errors.age && (
+          <span className=" text-red-500">{errors.age.message}</span>
+        )}
+
         <input
-          type="text"
           placeholder="Country"
           className=" p-3 shadow rounded"
-          onChange={(e) => setCountry(e.target.value)}
-          required
+          {...register("country", { required: true })}
         />
+        {errors.country && (
+          <span className=" text-red-500">This field is required</span>
+        )}
+
         <select
-          className="form-select appearance-none p-3 shadow"
-          onChange={(e) => setGender(e.target.value)}
-          required
+          className="form-select appearance-none p-3 shadow rounded"
+          {...register("gender", { required: true })}
         >
-          <option defaultValue="Select Gender" disabled selected>
+          <option value="Select Gender" disabled selected>
             Select Gender
           </option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-          <option value="Others">Others</option>
+          <option value="female">female</option>
+          <option value="male">male</option>
+          <option value="other">other</option>
         </select>
+        {errors.gender && (
+          <span className=" text-red-500">This field is required</span>
+        )}
 
-        <div className=" p-3 shadow rounded overflow-hidden">
-          <label htmlFor="profilePic">Add Profile Picture:</label>
-          <input
-            type="file"
-            name="profilePic"
-            accept="image/png, image/jpeg"
-            onChange={(e) => setProfilePic(e.target.files[0])}
-            required
-          />
-        </div>
+        <input type={"file"} {...register("profilePic", { required: true })} />
+        {errors.profilePic && <span>This field is required</span>}
 
         <button
           type="submit"
-          value="Create Customer"
           className=" font-bold p-4 shadow-lg rounded bg-slate-600 text-white hover:bg-green-600 hover:text-white cursor-pointer sm:col-span-2 md:col-span-3 disabled:bg-slate-400 disabled:cursor-wait"
           disabled={disabled}
         >
