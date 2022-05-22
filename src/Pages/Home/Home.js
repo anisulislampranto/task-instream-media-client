@@ -8,7 +8,7 @@ const Home = () => {
     <div>
       <Navbar />
       <div className=" grid grid-col md:grid md:grid-cols-4">
-        <div className=" md:h-screen md:sticky md:top-0">
+        <div className="md:h-screen md:sticky md:top-0">
           <CreateCustomer />
         </div>
         <div className="md:col-start-2 md:col-span-4">

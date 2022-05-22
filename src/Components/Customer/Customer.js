@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import EditCustomerInfo from "../EditCustomerInfo/EditCustomerInfo";
+import React from "react";
 
-const Customer = ({ customer }) => {
-  const { name, profilePic, gender, email, country, age, _id } = customer;
-  const [isEdit, setIsEdit] = useState(false);
+const Customer = (props) => {
+  const { customer, setShowModal, setCustomerInfo } = props;
+  const { name, profilePic, gender, email, country, age } = customer;
+
+  const handleClick = () => {
+    setShowModal(true);
+    setCustomerInfo(customer);
+  };
 
   return (
     <div className="shadow-lg grid grid-cols-1 gap-2 mt-5 bg-gray-200 rounded overflow-hidden">
@@ -15,7 +19,7 @@ const Customer = ({ customer }) => {
         />
       </div>
       <div className=" grid grid-cols-2 p-4">
-        <h1 className="text-xl col-span-2">
+        <h1 className="text-xl col-span-2 capitalize">
           <strong> {name}</strong>
         </h1>
         <p className=" col-span-2">{email}</p>
@@ -26,31 +30,16 @@ const Customer = ({ customer }) => {
           <strong> Age: </strong>
           {age}
         </p>
-        <p className=" col-span-2">
+        <p className=" col-span-2 capitalize">
           <strong> Country: </strong> {country}
         </p>
         <button
-          className=" col-start-2 shadow-lg px-2 font-bold bg-yellow-700 text-white rounded hover:bg-yellow-600 mt-3"
-          onClick={() => setIsEdit(!isEdit)}
+          className=" col-start-2 shadow-lg px-2 font-bold bg-yellow-700 text-white rounded hover:bg-yellow-600 mt-3 cursor-pointer"
+          onClick={handleClick}
         >
-          {isEdit ? "Close Edit" : "Edit"}
+          Edit
         </button>
       </div>
-      {isEdit && (
-        <div className=" p-3">
-          <h1 className="py-1">
-            <strong> Edit/Update Customer Info</strong>
-          </h1>
-          <EditCustomerInfo
-            _id={_id}
-            name={name}
-            age={age}
-            gender={gender}
-            email={email}
-            country={country}
-          />
-        </div>
-      )}
     </div>
   );
 };
