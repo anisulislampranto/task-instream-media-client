@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import EditCustomerInfo from "../EditCustomerInfo/EditCustomerInfo";
 
 const Customer = ({ customer }) => {
-  const { name, profilePic, gender, email, country, age } = customer;
-
-  console.log(name, gender, email, country, age, profilePic);
+  const { name, profilePic, gender, email, country, age, _id } = customer;
+  const [isEdit, setIsEdit] = useState(false);
 
   return (
     <div className="shadow-lg grid grid-cols-1 gap-2 mt-5 bg-gray-200 rounded overflow-hidden">
@@ -29,10 +29,28 @@ const Customer = ({ customer }) => {
         <p className=" col-span-2">
           <strong> Country: </strong> {country}
         </p>
-        <button className=" col-start-2 shadow-lg px-2 font-bold bg-yellow-700 text-white rounded hover:bg-yellow-600 mt-3">
-          Edit
+        <button
+          className=" col-start-2 shadow-lg px-2 font-bold bg-yellow-700 text-white rounded hover:bg-yellow-600 mt-3"
+          onClick={() => setIsEdit(!isEdit)}
+        >
+          {isEdit ? "Close Edit" : "Edit"}
         </button>
       </div>
+      {isEdit && (
+        <div className=" p-3">
+          <h1 className="py-1">
+            <strong> Edit/Update Customer Info</strong>
+          </h1>
+          <EditCustomerInfo
+            _id={_id}
+            name={name}
+            age={age}
+            gender={gender}
+            email={email}
+            country={country}
+          />
+        </div>
+      )}
     </div>
   );
 };

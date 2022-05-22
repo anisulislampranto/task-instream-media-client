@@ -19,12 +19,12 @@ const Customers = () => {
       <div className=" flex justify-between">
         <h1 className="text-3xl">Customers</h1>
         <button
-          className=" bg-green-700 text-white shadow-md p-3 rounded hover:bg-slate-600 hover:text-white "
+          className=" bg-green-700 text-white shadow-md p-3 rounded hover:bg-slate-600 hover:text-white"
           onClick={() => window.location.reload()}
         >
           {customers?.length
             ? "Page Refresh to show letest customers"
-            : "Loading . . ."}
+            : "Fetching New Customers . . ."}
         </button>
       </div>
 
