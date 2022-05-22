@@ -40,11 +40,8 @@ const CreateCustomer = () => {
   };
 
   return (
-    <div className=" mt-9 mx-2 sm:mx-5">
-      <form
-        className="grid grid-col gap-2 sm:grid sm:grid-cols-2 sm:gap-1 md:grid md:grid-cols-3 md:gap-3"
-        onSubmit={handleSubmit}
-      >
+    <div className=" mt-9 mx-2">
+      <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Name"
@@ -86,7 +83,7 @@ const CreateCustomer = () => {
           <option value="Others">Others</option>
         </select>
 
-        <div className=" p-3 shadow rounded">
+        <div className=" p-3 shadow rounded overflow-hidden">
           <label htmlFor="profilePic">Add Profile Picture:</label>
           <input
             type="file"

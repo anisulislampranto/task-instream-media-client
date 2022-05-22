@@ -22,17 +22,15 @@ const Customers = () => {
           className=" bg-green-700 text-white shadow-md p-3 rounded hover:bg-slate-600 hover:text-white"
           onClick={() => window.location.reload()}
         >
-          {customers?.length
-            ? "Page Refresh to show letest customers"
-            : "Fetching New Customers . . ."}
+          {customers?.length ? "Page Reload" : "Reloading. . ."}
         </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid sm:grid-cols-3 md:grid md:grid-cols-4 gap-2">
+      <div className="grid grid-cols-1 sm:grid sm:grid-cols-2 md:grid md:grid-cols-3 gap-2 xl:grid xl:grid-cols-4 xl:gap-2 2xl:grid 2xl:grid-cols-5 2xl:gap-2">
         {customers?.length ? (
           customers.map((customer) => <Customer customer={customer} />)
         ) : (
-          <div className="col-start-2 col-span-2 flex justify-center">
+          <div className="col-start-1 col-span-2 flex justify-center md:col-start-1 md:col-span-3">
             <img className="App-logo" src={loadingReactLogo} alt="" />
           </div>
         )}
