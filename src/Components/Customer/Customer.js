@@ -4,6 +4,7 @@ const Customer = (props) => {
   const { customer, setShowModal, setCustomerInfo } = props;
   const { name, profilePic, gender, email, country, age } = customer;
 
+  // onClick edit button EditCustomerModal will be open and clicked customer card data will be sent to parent component "Customers"
   const handleClick = () => {
     setShowModal(true);
     setCustomerInfo(customer);
@@ -14,8 +15,9 @@ const Customer = (props) => {
       <div className="w-full">
         <img
           className="h-48 mx-auto"
+          // syntext for showing base64 file as an image
           src={`data:image/png;base64,${profilePic}`}
-          alt=""
+          alt="profilePic"
         />
       </div>
       <div className=" grid grid-cols-2 p-4">

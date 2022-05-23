@@ -8,6 +8,7 @@ const EditCustomerInfo = (props) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const [disabled, setDisabled] = useState(false);
 
   const onSubmit = async (data) => {
@@ -21,6 +22,7 @@ const EditCustomerInfo = (props) => {
       updatedProfilePic,
     } = data;
 
+    // creating FormData because we have files to send to server
     const formData = new FormData();
     formData.append("name", updatedName);
     formData.append("email", updatedEmail);
@@ -39,8 +41,8 @@ const EditCustomerInfo = (props) => {
       const res = await fetch(url, settings);
       const data = await res.json();
       if (data) {
+        alert("Customer Information Updated Succesfully");
         setDisabled(false);
-        alert("edited");
       }
     } catch (error) {
       console.log(error);
@@ -49,7 +51,8 @@ const EditCustomerInfo = (props) => {
 
   return (
     <div>
-      {/* "handleSubmit" will validate your inputs before invoking "onSubmit"  */}
+      {/* onShubmit will go through handleSubmit & will ensure input validation */}
+      {/* default values are selected customers present value */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3">
         <input
           placeholder="Name"
@@ -61,6 +64,7 @@ const EditCustomerInfo = (props) => {
           <span className=" text-red-700">This field is required</span>
         )}
 
+        {/* email validation with regx */}
         <input
           placeholder="Email"
           className=" p-3 shadow rounded"
@@ -77,6 +81,7 @@ const EditCustomerInfo = (props) => {
           <span className=" text-red-700">{errors.updatedEmail.message}</span>
         )}
 
+        {/* age cannot be more then 100 validation with regx */}
         <input
           type={"number"}
           placeholder="Age"
@@ -109,7 +114,7 @@ const EditCustomerInfo = (props) => {
           defaultValue={gender}
           {...register("updatedGender", { required: true })}
         >
-          <option value="Select Gender" disabled>
+          <option value="selectGender" disabled>
             Select Gender
           </option>
           <option value="male">male</option>
@@ -117,9 +122,10 @@ const EditCustomerInfo = (props) => {
           <option value="other">other</option>
         </select>
         {errors.updatedGender && (
-          <span className=" text-red-700">This field is required</span>
+          <span className="text-red-700">This field is required</span>
         )}
 
+        {/* only png && jpeg file accepted as profile picture */}
         <input
           type={"file"}
           {...register("updatedProfilePic", { required: true })}
@@ -130,7 +136,7 @@ const EditCustomerInfo = (props) => {
 
         <button
           type="submit"
-          className=" font-bold p-4 shadow-lg rounded bg-slate-600 text-white hover:bg-green-600 hover:text-white cursor-pointer sm:col-span-2 md:col-span-3 disabled:bg-slate-400 disabled:cursor-wait"
+          className="font-bold p-4 shadow-lg rounded bg-slate-600 text-white hover:bg-green-600 hover:text-white cursor-pointer sm:col-span-2 md:col-span-3 disabled:bg-slate-400 disabled:cursor-wait"
           disabled={disabled}
         >
           {disabled ? "Submitted" : "Submit"}

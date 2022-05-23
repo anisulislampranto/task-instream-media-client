@@ -17,6 +17,8 @@ const EditCustomerModal = (props) => {
               ✖
             </span>
           </div>
+
+          {/* Modal Body */}
           <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full backdrop-blur-xl bg-black/30 outline-none focus:outline-none overflow-hidden p-5">
             <h1 className="py-1 text-2xl">
               <strong>Edit/Update Customer Info</strong>

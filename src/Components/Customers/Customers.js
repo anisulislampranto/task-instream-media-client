@@ -1,13 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Customer from "../Customer/Customer";
 import loadingReactLogo from "../../logo.svg";
 import EditCustomerModal from "../EditCustomerModal/EditCustomerModal";
-import useCustomers from "../../hooks/useCustomers";
 
 const Customers = () => {
-  const [customers] = useCustomers();
+  const [customers, setCustomers] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  // specific customer data stored in a state from child compoenet "Customer" by state lifting
   const [customerInfo, setCustomerInfo] = useState({});
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const res = await fetch("http://localhost:4040/customers");
+      const data = await res.json();
+      setCustomers(data);
+    };
+    fetchData().catch(console.error);
+  }, []);
 
   return (
     <div className=" mx-5 mt-4">
@@ -37,6 +46,9 @@ const Customers = () => {
           </div>
         )}
       </div>
+
+      {/* showing modal onClick individual customer card edit button and passing that 
+      indivudual customer data to EditCustomerModal Component && that data came with state lifting from child component "Customer"  */}
       {showModal && (
         <EditCustomerModal
           setShowModal={setShowModal}
