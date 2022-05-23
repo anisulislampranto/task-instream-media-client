@@ -127,6 +127,7 @@ const EditCustomerInfo = (props) => {
         {/* only png && jpeg file accepted as profile picture */}
         <input
           type={"file"}
+          accept="image/png, image/jpeg"
           {...register("updatedProfilePic", { required: true })}
         />
         {errors.updatedProfilePic && (
