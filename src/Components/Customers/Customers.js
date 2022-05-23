@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Customer from "../Customer/Customer";
 import loadingReactLogo from "../../logo.svg";
 import EditCustomerModal from "../EditCustomerModal/EditCustomerModal";
+import useCustomers from "../../hooks/useCustomers";
 
 const Customers = () => {
-  const [customers, setCustomers] = useState([]);
+  const [customers] = useCustomers();
   const [showModal, setShowModal] = useState(false);
   const [customerInfo, setCustomerInfo] = useState({});
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch("http://localhost:4040/customers");
-      const data = await res.json();
-      setCustomers(data);
-    };
-    fetchData().catch(console.error);
-  }, []);
 
   return (
     <div className=" mx-5 mt-4">
