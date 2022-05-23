@@ -8,7 +8,6 @@ const EditCustomerInfo = (props) => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   const [disabled, setDisabled] = useState(false);
 
   const onSubmit = async (data) => {

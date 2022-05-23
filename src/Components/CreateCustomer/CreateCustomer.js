@@ -7,8 +7,6 @@ const CreateCustomer = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
-  // for conditional button status change
   const [disabled, setDisabled] = useState(false);
 
   const onSubmit = async (data) => {
